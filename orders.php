@@ -1,29 +1,67 @@
-<?php
-    $host = '127.0.0.1';
-    $port = '5432';
-    $dbname = 'northwind';
-    $user = 'demouser';
-    $password = 'demopass123';
-
-    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password";
-
-    try {
-	$pdo = new PDO($dsn);
-
-        if ($pdo) {
-            $stmt = $pdo->query('SELECT * FROM order_details');
-            echo "<table border='1'>";
-            echo "<tr><th>Order ID</th><th>Product</th><th>Quantity</th></tr>";
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['product']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
         }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-?>
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Order Details</h1>
+
+    <?php
+        $host = '127.0.0.1';
+        $port = '5432';
+        $dbname = 'northwind';
+        $user = 'demouser';
+        $password = 'demopass123';
+
+        $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password";
+
+        try {
+            $pdo = new PDO($dsn);
+
+            if ($pdo) {
+                $stmt = $pdo->query('SELECT * FROM order_details');
+                echo "<table>";
+                echo "<tr><th>Order ID</th><th>Product ID</th><th>Unit Price</th><th>Quantity</th><th>Discount</th></tr>";
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['product_id']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['unit_price']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['discount']) . "</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+            }
+        } catch (PDOException $e) {
+            echo "<p style='color: red; text-align: center;'>Error: " . $e->getMessage() . "</p>";
+        }
+    ?>
+</body>
+</html>
