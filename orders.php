@@ -12,6 +12,10 @@
             color: #333;
             text-align: center;
         }
+        h2 {
+            color: #555;
+            text-align: center;
+        }
         table {
             width: 80%;
             margin: 20px auto;
@@ -45,6 +49,11 @@
             $pdo = new PDO($dsn);
 
             if ($pdo) {
+                // Fetch and display the server name
+                $serverInfo = $pdo->query("SELECT inet_server_addr() AS server_name")->fetch(PDO::FETCH_ASSOC);
+                echo "<h2>Connected to Database Server: " . htmlspecialchars($serverInfo['server_name']) . "</h2>";
+
+                // Fetch and display order details
                 $stmt = $pdo->query('SELECT * FROM order_details');
                 echo "<table>";
                 echo "<tr><th>Order ID</th><th>Product ID</th><th>Unit Price</th><th>Quantity</th><th>Discount</th></tr>";
